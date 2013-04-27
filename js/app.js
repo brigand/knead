@@ -18,8 +18,16 @@ function App() {
     self.show_navbar = ko.observable(false);
     self.show_account_button = ko.observable(true);
 
+    // Call screens by name
+    self.screens = ['', 'login', 'info/basic', 'info/card', ''];
+
     // Click handlers
     self.login = function() {
+        // Not on login page; so go there
+        // unless we're logged in; then jump to the main screen
+        if (self.slide() != 1)
+
+
         self.slide(1);
     }
 

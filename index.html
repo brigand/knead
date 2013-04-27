@@ -31,19 +31,21 @@
             <img class="block" src="img/logo-01.svg" alt="knead logo">
             <button class="button" data-bind="click: what_is_knead">WHAT IS KNEAD?</button>
             <button class="button" data-bind="click: fb_login">FACEBOOK LOG IN</button>
-            <button class="button" data-bind="click: login">LOG IN</button>
+            <button class="button" data-bind="click: login">LOG IN / REGISTER</button>
 
             <div class="Screensubtitle">Don't have an account? <a>Sign Up</a></div>
         </form>
 
         <form class="screen" data-bind="submit: noop()">
+            <input type="number" class="field notopmargin" data-bind="value: phone" placeholder="Phone #">
+            <input type="text" class="field notopmargin" data-bind="value: password" placeholder="password">
 
+            <button class="button" data-bind="click: what_is_knead">WHAT IS KNEAD?</button>
         </form>
 
         <form class="screen" data-bind="submit: noop()">
             <input type="text" class="field" data-bind="value: first_name" placeholder="First Name">
             <input type="text" class="field notopmargin" data-bind="value: last_name" placeholder="Last Name">
-            <input type="number" class="field notopmargin" data-bind="value: phone" placeholder="Phone #">
         </form>
 
         <form class="screen" data-bind="submit: noop()">
@@ -59,6 +61,7 @@
         </form>
 
         <div class="button">GET MASSAGE</div>
+        <div class="clear"></div>
 
     </div>
 </div>

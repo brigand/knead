@@ -34,6 +34,7 @@ body {
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
     z-index: 1000;
     position: fixed;
+    display: none;
 }
 
 #main {
@@ -134,9 +135,9 @@ div#back p {
     margin-top: 50px;
     border: 1px solid #c4c4c4;
     padding: 23px;
-    width: 90%;
+    width: 70%;
     max-width: 400px;
-    min-width: 20%;
+    min-width: 25%;
     background: #fff;
 
     -webkit-border-radius: 4px;
@@ -176,11 +177,10 @@ div#back p {
     color: #ffffff;
     font-size: 20px;
     font-weight: 700;
-    padding-top: 25px;
-    padding-bottom: 22px;
-    width: 90%;
+    padding: 23px;
+    width: 70%;
     max-width: 400px;
-    min-width: 20%;
+    min-width: 25%;
     text-decoration: none;
     opacity: 0.9;
 }
@@ -229,4 +229,15 @@ div#back p {
     margin-left: auto;
     margin-right: auto;
     text-align: center;
+}
+
+.clear { clear: both; }
+.clear:before { clear: both; content: ''; width: 0; height: 0;}
+.clear:after { clear: both; content: ''; width: 0; height: 0;}
+
+
+@media (max-height: 500px) {
+    #screens {
+        top: 1px;
+    }
 }
