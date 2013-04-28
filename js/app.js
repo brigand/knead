@@ -7,9 +7,10 @@ function App() {
     self.first_name = ko.observable('');
     self.last_name = ko.observable('');
     self.phone = ko.observable('');
+    self.password = ko.observable('');
     self.card = ko.observable('');
     self.cvv = ko.observable('');
-    self.expiration = ko.observable('');
+    self.expiration = ko.observable('2016');
     self.appointment_time = ko.observable();
 
     // App state values
@@ -20,15 +21,16 @@ function App() {
 
     // Call screens by name
     self.screens = ['', 'login', 'info/basic', 'info/card', ''];
+    self.show = function(which) {
+
+    }
 
     // Click handlers
     self.login = function() {
         // Not on login page; so go there
         // unless we're logged in; then jump to the main screen
-        if (self.slide() != 1)
-
-
-        self.slide(1);
+        if (self.slide() != 1 && !self.logged_in() == false)
+            self.slide(1);
     }
 
     self.fb_login = function() {
@@ -65,7 +67,9 @@ function App() {
             , function(){
                 // TODO: check if we need to change the background
 
+                $(element).find('.screen:nth-child(' + (slideNo + 1) + ')').find('input, select').first().focus();
             }); // Make the element visible
+
 
 
             $('html, body').scrollTop(0);

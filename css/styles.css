@@ -183,6 +183,7 @@ div#back p {
     min-width: 25%;
     text-decoration: none;
     opacity: 0.9;
+    cursor: pointer;
 }
 
 .button:hover {
