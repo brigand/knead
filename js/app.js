@@ -1,6 +1,6 @@
 Parse.initialize("afbV5ko6z5E8bh91esQlpe9o3ADw3Kit4pVWxJfT", "NFyUzhMO9kTDExBvpElmNrCJJTbpknOsf52dBe3g");
 
-MIN_DELAY  = 1; // Minimum hours between now and apointment time
+MIN_DELAY = 1; // Minimum hours between now and apointment time
 MIN_HOUR = 8; // First time for appointments
 MAX_HOUR = 22; // This is in 24 hour, so this would be 10pm
 
@@ -9,7 +9,7 @@ function App() {
 
     // Settings
     // The first hour to show
-    self.appointment_times = ko.computed(function(){
+    self.appointment_times = ko.computed(function () {
         var a = ['Appointment Time'];
 
         var now = new Date;
@@ -21,7 +21,7 @@ function App() {
         // Round it to get an even hour
         start_hour = Math.ceil(start_hour);
 
-        for(i=start_hour; i <= MAX_HOUR; i += 0.5) {
+        for (i = start_hour; i <= MAX_HOUR; i += 0.5) {
             var min, hour, time_of_day;
 
             // if we have a fraction, it's a half hour
@@ -30,7 +30,7 @@ function App() {
             else
                 min = '00';
 
-            hour = math.floor(i);
+            hour = Math.floor(i);
 
             if (hour !== 0 && hour / 12 >= 1)
                 time_of_day = 'pm';
@@ -49,18 +49,20 @@ function App() {
     });
 
     self.expirations = ['Expiration'];
-    for(i=2013; i<2033; i++) self.expirations.push(i.toString());
+    for (i = 2013; i < 2033; i++) self.expirations.push(i.toString());
     self.gender_preferences = ['No Gender Preference', 'Male', 'Female'];
 
     // Input fields
     self.first_name = ko.observable('');
     self.last_name = ko.observable('');
-    self.phone = ko.observable('');
+    self.phone = ko.observable().extend({phone: 0});
     self.password = ko.observable('');
     self.card = ko.observable('');
     self.cvv = ko.observable('');
     self.expiration = ko.observable('2016');
     self.appointment_time = ko.observable();
+    self.gender_preference = ko.observable();
+    self.special_instructions = ko.observable('');
 
     // App state values
     self.slide = ko.observable(0);
@@ -72,10 +74,10 @@ function App() {
 
     // Call screens by name
     self.screens = ['landing', 'login', 'register', 'info/basic', 'info/card', ''];
-    self.show = function(which) {
+    self.show = function (which) {
         if (which === 'next') {
             if (!self.logged_in())
-               which = 'login';
+                which = 'login';
             else if (!self.first_name())
                 which = 'info/basic';
             else if (!self.card() && !self.has_card_set())
@@ -84,44 +86,63 @@ function App() {
                 which = 'main';
         }
 
-        for (var i = 0, name=''; i < self.screens.length; i++) {
+        for (var i = 0, name = ''; i < self.screens.length; i++) {
             name = self.screens[i];
             if (name === which) {
                 // go to the slide of the matching index
                 self.slide(i);
-                break;
+                return;
             }
         }
     }
 
     // Click handlers
-    self.login = function() {
+    self.login = function () {
         // if on login page, just attempt to log in
         if (self.slide() == 1) {
             // TODO: implement login
-            alert('trying to log in');
+            self.logged_in(true);
+            self.show('next');
         }
         // otherwise have the screen handler guess where to go
         else
             self.show('next');
     }
 
-    self.fb_login = function() {
+    self.fb_login = function () {
 
     }
 
-    self.what_is_knead = function() {
+    self.what_is_knead = function () {
         alert('not implemented');
     }
 
-    self.register = function() {
-
+    self.register = function () {
+        if (self.slide() == 2) {
+            // TODO: registration logic
+            self.logged_in(true);
+            self.show('next');
+        }
+        else
+            self.show('register');
     }
+
+    self.save_basic_info = function(){
+        // TODO: save info to Parse
+        self.slide('next');
+    };
+
+    self.save_card_info = function(){
+        // TODO: save info to Parse
+        self.slide('next');
+    };
+
+
 
 
     // Special handlers
     ko.bindingHandlers.left = {
-        update: function(element, valueAccessor, allBindingsAccessor) {
+        update:function (element, valueAccessor, allBindingsAccessor) {
             // First get the latest data that we're bound to
             var value = valueAccessor(), allBindings = allBindingsAccessor();
 
@@ -135,23 +156,23 @@ function App() {
 
             // Slide into the new screen
             $(element).animate({
-                left: (-100 * slideNo) + "%"
-            }, duration
-            , function(){
-                // TODO: check if we need to change the background
+                    left:(-100 * slideNo) + "%"
+                }, duration
+                , function () {
+                    // TODO: check if we need to change the background
 
-                $(element).find('.screen:nth-child(' + (slideNo + 1) + ')').find('input, select').first().focus();
-            }); // Make the element visible
-
+                    $(element).find('.screen:nth-child(' + (slideNo + 1) + ')').find('input, select').first().focus();
+                }); // Make the element visible
 
 
             $('html, body').scrollTop(0);
         }
     };
 
-
     // Helper functions
-    self.noop = function(){ return self.noop; };
+    self.noop = function () {
+        return self.noop;
+    };
 }
 
 var app = new App();
@@ -159,11 +180,11 @@ ko.applyBindings(app);
 
 var TestObject = Parse.Object.extend("TestObject");
 var testObject = new TestObject();
-testObject.save({foo: "bar"}, {
-    success: function(object) {
+testObject.save({foo:"bar"}, {
+    success:function (object) {
         $(".success").show();
     },
-    error: function(model, error) {
+    error:function (model, error) {
         $(".error").show();
     }
 });
@@ -195,7 +216,7 @@ $(window).resize(function () {
     }
 
     $body.css({
-        'background-size': (background_scale * 100) + "%"
+        'background-size':(background_scale * 100) + "%"
     });
 }).resize();
 

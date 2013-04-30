@@ -31,17 +31,19 @@
             <img class="block" src="img/logo-01.svg" alt="knead logo">
             <button class="button" data-bind="click: what_is_knead">WHAT IS KNEAD?</button>
             <button class="button" data-bind="click: fb_login">FACEBOOK LOG IN</button>
-            <button class="button" data-bind="click: login">LOG IN / REGISTER</button>
+            <button class="button" data-bind="click: login">LOG IN</button>
 
-            <div class="screensubtitle">Don't have an account? <a href="#" >Sign Up</a></div>
+            <div class="screensubtitle">Don't have an account? <a href="#" data-bind="click: register">Sign Up</a></div>
         </form>
 
         <form class="screen" data-bind="submit: noop()">
             <h2 class="screentitle">Welcome back!</h2>
             <input type="tel" class="field" data-bind="value: phone" placeholder="Phone #">
-            <input type="text" class="field" data-bind="value: password" placeholder="password">
+            <input type="password" class="field" data-bind="value: password" placeholder="password">
 
             <button class="button" data-bind="click: login">Log In</button>
+
+            <div class="screensubtitle">Don't have an account? <a href="#" data-bind="click: register">Sign Up</a></div>
         </form>
 
         <form class="screen" data-bind="submit: noop()">
@@ -56,7 +58,7 @@
             <h2 class="screentitle">Basic Info</h2>
             <input type="text" class="field" data-bind="value: first_name" placeholder="First Name">
             <input type="text" class="field" data-bind="value: last_name" placeholder="Last Name">
-            <button class="button" data-bind="click: register">Done</button>
+            <button class="button" data-bind="click: save_basic_info">Save</button>
         </form>
 
         <form class="screen" data-bind="submit: noop()">
@@ -65,6 +67,7 @@
             <input type="number" class="field" data-bind="value: cvv" placeholder="CVV">
             <label for="expiration">Expiration Date</label>
             <select class="field" id="expiration" data-bind="options: expirations, value: expiration"></select>
+            <button class="button" data-bind="click: save_card_info">Save</button>
         </form>
 
         <form class="screen" data-bind="submit: noop()">
@@ -82,9 +85,11 @@
     </div>
 </div>
 
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript" src="js/underscore.js"></script>
+<script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.2.7.min.js"></script>
-<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/knockout/2.2.0/knockout-min.js"></script>
+<script type="text/javascript" src="js/knockout-min.js"></script>
+<script type="text/javascript" src="js/knockout.validation.js"></script>
 <script type="text/javascript" src="js/app.js"></script>
 </body>
 
