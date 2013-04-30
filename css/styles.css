@@ -27,6 +27,11 @@ body {
 
 }
 
+.screen label {
+    padding-top: 1em;
+    display: block;
+}
+
 #navbar {
     background-color: rgba(0, 0, 0, 0.3);
     height: 50px;
@@ -118,6 +123,20 @@ div#back p {
     text-shadow: 0 -1px 0 rgba(0,0,0, 0.4);
 }
 
+.screentitle, .button {
+    text-transform: uppercase;
+}
+
+.screentitle:hover, .button:hover {
+    text-transform: uppercase;
+}
+
+.screentitle:active, .button:active,
+.screentitle:focus, .button:focus {
+    text-transform: lowercase;
+}
+
+
 
 .screentitle {
     padding-top: 130px;
@@ -128,11 +147,11 @@ div#back p {
     opacity: 0.9;
     text-align: center;
     margin: 0 auto;
+    margin-bottom: 2em;
 }
 
 .field {
     display: block;
-    margin-top: 50px;
     border: 1px solid #c4c4c4;
     padding: 23px;
     width: 70%;
@@ -199,7 +218,7 @@ div#back p {
 }
 
 .screensubtitle {
-    padding-top: 3em;
+    padding-top: .5em;
     color: #fff;
     font-family: "Myriad Pro", helvetica, sans-serif;
     font-size: 20px;

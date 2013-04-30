@@ -33,31 +33,47 @@
             <button class="button" data-bind="click: fb_login">FACEBOOK LOG IN</button>
             <button class="button" data-bind="click: login">LOG IN / REGISTER</button>
 
-            <div class="Screensubtitle">Don't have an account? <a>Sign Up</a></div>
+            <div class="screensubtitle">Don't have an account? <a href="#" >Sign Up</a></div>
         </form>
 
         <form class="screen" data-bind="submit: noop()">
-            <input type="number" class="field notopmargin" data-bind="value: phone" placeholder="Phone #">
-            <input type="text" class="field notopmargin" data-bind="value: password" placeholder="password">
+            <h2 class="screentitle">Welcome back!</h2>
+            <input type="tel" class="field" data-bind="value: phone" placeholder="Phone #">
+            <input type="text" class="field" data-bind="value: password" placeholder="password">
 
-            <button class="button" data-bind="click: login">LOG ME IN</button>
+            <button class="button" data-bind="click: login">Log In</button>
         </form>
 
         <form class="screen" data-bind="submit: noop()">
+            <h2 class="screentitle">Create Account:</h2>
             <input type="text" class="field" data-bind="value: first_name" placeholder="First Name">
-            <input type="text" class="field notopmargin" data-bind="value: last_name" placeholder="Last Name">
+            <input type="text" class="field" data-bind="value: last_name" placeholder="Last Name">
+            <input type="tel" class="field" data-bind="value: phone" placeholder="Phone #">
+            <button class="button" data-bind="click: register">Done</button>
         </form>
 
         <form class="screen" data-bind="submit: noop()">
+            <h2 class="screentitle">Basic Info</h2>
+            <input type="text" class="field" data-bind="value: first_name" placeholder="First Name">
+            <input type="text" class="field" data-bind="value: last_name" placeholder="Last Name">
+            <button class="button" data-bind="click: register">Done</button>
+        </form>
+
+        <form class="screen" data-bind="submit: noop()">
+            <h2 class="screentitle">Credit Card:</h2>
             <input type="number" class="field" data-bind="value: card" placeholder="Card Number">
-            <input type="number" class="field notopmargin" data-bind="value: cvv" placeholder="CVV">
-            <select class="field notopmargin" data-bind="options: expirations, value: expiration" placeholder="Expiration Date"></select>
+            <input type="number" class="field" data-bind="value: cvv" placeholder="CVV">
+            <label for="expiration">Expiration Date</label>
+            <select class="field" id="expiration" data-bind="options: expirations, value: expiration"></select>
         </form>
 
         <form class="screen" data-bind="submit: noop()">
-            <div class="screentitle">RELIEF IS A TAP AWAY</div>
+            <h2 class="screentitle">Relief is a Tap Away</h2>
 
-            <select class="field" data-bind="options: appointment_times, value: appointment_time" placeholder="Appointment Times"></select>
+            <select class="field" data-bind="options: appointment_times, value: appointment_time"></select>
+            <select class="field" data-bind="options: gender_preferences, value: gender_preference"></select>
+
+            <input type="text" class="field" data-bind="value: special_instructions" placeholder="Special Instructions">
         </form>
 
         <div class="button">GET MASSAGE</div>

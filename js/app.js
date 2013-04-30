@@ -1,7 +1,56 @@
 Parse.initialize("afbV5ko6z5E8bh91esQlpe9o3ADw3Kit4pVWxJfT", "NFyUzhMO9kTDExBvpElmNrCJJTbpknOsf52dBe3g");
 
+MIN_DELAY  = 1; // Minimum hours between now and apointment time
+MIN_HOUR = 8; // First time for appointments
+MAX_HOUR = 22; // This is in 24 hour, so this would be 10pm
+
 function App() {
-    var self = this;
+    var self = this, i;
+
+    // Settings
+    // The first hour to show
+    self.appointment_times = ko.computed(function(){
+        var a = ['Appointment Time'];
+
+        var now = new Date;
+
+        // Find the first hour at least MIN_DELAY hours from now
+        // or if it's very early, the first time
+        var start_hour = Math.max(now.getHours() + (now.getMinutes() / 60) + MIN_DELAY, MIN_HOUR);
+
+        // Round it to get an even hour
+        start_hour = Math.ceil(start_hour);
+
+        for(i=start_hour; i <= MAX_HOUR; i += 0.5) {
+            var min, hour, time_of_day;
+
+            // if we have a fraction, it's a half hour
+            if (i != Math.floor(i))
+                min = '30';
+            else
+                min = '00';
+
+            hour = math.floor(i);
+
+            if (hour !== 0 && hour / 12 >= 1)
+                time_of_day = 'pm';
+            else
+                time_of_day = 'am';
+
+            // Turn hour into 0-12
+            hour = hour % 12;
+
+            if (hour === 0) hour = 12;
+            a.push(hour + ':' + min + time_of_day);
+
+            return a;
+        }
+
+    });
+
+    self.expirations = ['Expiration'];
+    for(i=2013; i<2033; i++) self.expirations.push(i.toString());
+    self.gender_preferences = ['No Gender Preference', 'Male', 'Female'];
 
     // Input fields
     self.first_name = ko.observable('');
@@ -18,19 +67,43 @@ function App() {
     self.back_button_text = ko.observable('BACK');
     self.show_navbar = ko.observable(false);
     self.show_account_button = ko.observable(true);
+    self.logged_in = ko.observable(false);
+
 
     // Call screens by name
-    self.screens = ['', 'login', 'info/basic', 'info/card', ''];
+    self.screens = ['landing', 'login', 'register', 'info/basic', 'info/card', ''];
     self.show = function(which) {
+        if (which === 'next') {
+            if (!self.logged_in())
+               which = 'login';
+            else if (!self.first_name())
+                which = 'info/basic';
+            else if (!self.card() && !self.has_card_set())
+                which = 'info/card';
+            else
+                which = 'main';
+        }
 
+        for (var i = 0, name=''; i < self.screens.length; i++) {
+            name = self.screens[i];
+            if (name === which) {
+                // go to the slide of the matching index
+                self.slide(i);
+                break;
+            }
+        }
     }
 
     // Click handlers
     self.login = function() {
-        // Not on login page; so go there
-        // unless we're logged in; then jump to the main screen
-        if (self.slide() != 1 && !self.logged_in() == false)
-            self.slide(1);
+        // if on login page, just attempt to log in
+        if (self.slide() == 1) {
+            // TODO: implement login
+            alert('trying to log in');
+        }
+        // otherwise have the screen handler guess where to go
+        else
+            self.show('next');
     }
 
     self.fb_login = function() {
@@ -42,7 +115,7 @@ function App() {
     }
 
     self.register = function() {
-        self.slide(2);
+
     }
 
 
@@ -76,10 +149,6 @@ function App() {
         }
     };
 
-    // Settings
-    self.appointment_times = [];
-    self.expirations = [];
-    for(var i=2013; i<2033; i++) self.expirations.push(i.toString());
 
     // Helper functions
     self.noop = function(){ return self.noop; };
