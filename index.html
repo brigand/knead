@@ -51,6 +51,7 @@
             <input type="text" class="field" data-bind="value: first_name" placeholder="First Name">
             <input type="text" class="field" data-bind="value: last_name" placeholder="Last Name">
             <input type="tel" class="field" data-bind="value: phone" placeholder="Phone #">
+            <input type="password" class="field" data-bind="value: password" placeholder="password">
             <button class="button" data-bind="click: register">Done</button>
         </form>
 
@@ -77,11 +78,10 @@
             <select class="field" data-bind="options: gender_preferences, value: gender_preference"></select>
 
             <input type="text" class="field" data-bind="value: special_instructions" placeholder="Special Instructions">
+            <button class="button" data-bind="click: get_massage">Get Massage</button>
         </form>
 
-        <div class="button">GET MASSAGE</div>
         <div class="clear"></div>
-
     </div>
 </div>
 

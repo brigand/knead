@@ -1,8 +1,7 @@
-Parse.initialize("afbV5ko6z5E8bh91esQlpe9o3ADw3Kit4pVWxJfT", "NFyUzhMO9kTDExBvpElmNrCJJTbpknOsf52dBe3g");
-
 MIN_DELAY = 1; // Minimum hours between now and apointment time
 MIN_HOUR = 8; // First time for appointments
 MAX_HOUR = 22; // This is in 24 hour, so this would be 10pm
+RATE = 45.00 // USD per hour
 
 function App() {
     var self = this, i;
@@ -70,10 +69,11 @@ function App() {
     self.show_navbar = ko.observable(false);
     self.show_account_button = ko.observable(true);
     self.logged_in = ko.observable(false);
+    self.has_card_set = ko.observable(false);
 
 
     // Call screens by name
-    self.screens = ['landing', 'login', 'register', 'info/basic', 'info/card', ''];
+    self.screens = ['landing', 'login', 'register', 'info/basic', 'info/card', 'main', 'confirm'];
     self.show = function (which) {
         if (which === 'next') {
             if (!self.logged_in())
@@ -94,15 +94,25 @@ function App() {
                 return;
             }
         }
+        console.error("I can't find slide", which);
     }
 
     // Click handlers
     self.login = function () {
         // if on login page, just attempt to log in
-        if (self.slide() == 1) {
-            // TODO: implement login
-            self.logged_in(true);
-            self.show('next');
+        if (self.slide() == 1 || self.slide() == 2) {
+            Parse.User.logIn(self.phone(), self.password(), {
+                success: function(user) {
+                    self.first_name(user.get("first"));
+                    self.last_name(user.get("last"));
+
+                    self.logged_in(true);
+                    self.show('next');
+                },
+                error: function(user, error) {
+                    console.error(error);
+                }
+            });
         }
         // otherwise have the screen handler guess where to go
         else
@@ -114,12 +124,21 @@ function App() {
     }
 
     self.what_is_knead = function () {
+        // TODO: add a slide for a knead description
+
         alert('not implemented');
     }
 
     self.register = function () {
         if (self.slide() == 2) {
-            // TODO: registration logic
+            Parse.User.signUp(self.phone(), self.password(), { ACL: new Parse.ACL() }, {
+                success: function(user) {
+                    self.login();
+                },
+                error: function(user, error) {
+                    console.error(error);
+                }
+            });
             self.logged_in(true);
             self.show('next');
         }
@@ -128,16 +147,20 @@ function App() {
     }
 
     self.save_basic_info = function(){
-        // TODO: save info to Parse
-        self.slide('next');
+        var user = Parse.User.current();
+        user.set("first", self.first_name());
+        user.set("last", self.last_name());
+        self.show('next');
     };
 
     self.save_card_info = function(){
-        // TODO: save info to Parse
-        self.slide('next');
+
+        self.show('next');
     };
 
-
+    self.get_massage = function() {
+        self.show('confirm')
+    }
 
 
     // Special handlers
@@ -161,7 +184,10 @@ function App() {
                 , function () {
                     // TODO: check if we need to change the background
 
-                    $(element).find('.screen:nth-child(' + (slideNo + 1) + ')').find('input, select').first().focus();
+                    if(isNaN(slideNo))
+                        console.error('Bad slide number', self.slide());
+                    else
+                        $(element).find('.screen:nth-child(' + (slideNo + 1) + ')').find('input, select').first().focus();
                 }); // Make the element visible
 
 
@@ -175,19 +201,25 @@ function App() {
     };
 }
 
+// Parse is loaded remotely, so this prevents offline crashed durring development
+if (typeof Parse !== "undefined") {
+    Parse.initialize("afbV5ko6z5E8bh91esQlpe9o3ADw3Kit4pVWxJfT", "NFyUzhMO9kTDExBvpElmNrCJJTbpknOsf52dBe3g");
+
+    var TestObject = Parse.Object.extend("TestObject");
+    var testObject = new TestObject();
+    testObject.save({foo:"bar"}, {
+        success:function (object) {
+            $(".success").show();
+        },
+        error:function (model, error) {
+            $(".error").show();
+        }
+    });
+}
+
+
 var app = new App();
 ko.applyBindings(app);
-
-var TestObject = Parse.Object.extend("TestObject");
-var testObject = new TestObject();
-testObject.save({foo:"bar"}, {
-    success:function (object) {
-        $(".success").show();
-    },
-    error:function (model, error) {
-        $(".error").show();
-    }
-});
 
 $(window).resize(function () {
     var $this = $(this);
