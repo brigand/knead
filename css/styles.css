@@ -6,7 +6,7 @@ html, body {
 
 body {
     margin: 0;
-    background-image: url(http://www.wallsave.com/wallpapers/1920x1080/blur/110940/blur-sunset-mountain-minimal-110940.jpg);
+    background-image: url(../img/bg.jpg);
     background-size: 100%;
 }
 
@@ -33,7 +33,7 @@ body {
 }
 
 #navbar {
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.3);ind
     height: 50px;
     width: 100%;
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
