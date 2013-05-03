@@ -131,13 +131,6 @@ div#back p {
     text-transform: uppercase;
 }
 
-.screentitle:active, .button:active,
-.screentitle:focus, .button:focus {
-    text-transform: lowercase;
-}
-
-
-
 .screentitle {
     padding-top: 130px;
     display: block;
