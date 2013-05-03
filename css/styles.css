@@ -271,8 +271,19 @@ div#back p {
 .clear:after { clear: both; content: ''; width: 0; height: 0;}
 
 
-@media (max-height: 500px) {
+@media (max-height: 700px) {
     #screens {
         top: 1px;
     }
+
+    .screentitle {
+        padding-top: 10px;
+    }
 }
+
+@media (max-width: 510px) {
+    .field, .button {
+        width: 95%;
+    }
+}
+
