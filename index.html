@@ -28,8 +28,7 @@
 
     <div id="screens" data-bind="left: slide">
         <form class="screen" data-bind="submit: noop()">
-            <img class="block" src="img/logo-01.svg" alt="knead logo">
-            <button class="button" data-bind="click: what_is_knead">WHAT IS KNEAD?</button>
+            <img class="block" id="logo" src="img/logo-01.svg" alt="knead logo">
             <button class="button" data-bind="click: fb_login">FACEBOOK LOG IN</button>
             <button class="button" data-bind="click: login">LOG IN</button>
 
@@ -57,6 +56,13 @@
 
         <form class="screen" data-bind="submit: noop()">
             <h2 class="screentitle">Basic Info</h2>
+            <input type="text" class="field" data-bind="value: first_name" placeholder="First Name">
+            <input type="text" class="field" data-bind="value: last_name" placeholder="Last Name">
+            <button class="button" data-bind="click: save_basic_info">Save</button>
+        </form>
+
+        <form class="screen" data-bind="submit: noop()">
+            <h2 class="screentitle">Appointment Address</h2>
             <input type="text" class="field" data-bind="value: first_name" placeholder="First Name">
             <input type="text" class="field" data-bind="value: last_name" placeholder="Last Name">
             <button class="button" data-bind="click: save_basic_info">Save</button>
