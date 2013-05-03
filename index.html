@@ -32,7 +32,7 @@
             <button class="button" data-bind="click: fb_login">FACEBOOK LOG IN</button>
             <button class="button" data-bind="click: login">LOG IN</button>
 
-            <div class="screensubtitle">Don't have an account? <a href="#" data-bind="click: register">Sign Up</a></div>
+            <div class="screensubtitle noaccount">Don't have an account? <a href="#" data-bind="click: register">Sign Up</a></div>
         </form>
 
         <form class="screen" data-bind="submit: noop()">
@@ -42,7 +42,7 @@
 
             <button class="button" data-bind="click: login">Log In</button>
 
-            <div class="screensubtitle">Don't have an account? <a href="#" data-bind="click: register">Sign Up</a></div>
+            <div class="screensubtitle noaccount">Don't have an account? <a href="#" data-bind="click: register">Sign Up</a></div>
         </form>
 
         <form class="screen" data-bind="submit: noop()">
@@ -63,9 +63,9 @@
 
         <form class="screen" data-bind="submit: noop()">
             <h2 class="screentitle">Appointment Address</h2>
-            <input type="text" class="field" data-bind="value: first_name" placeholder="First Name">
-            <input type="text" class="field" data-bind="value: last_name" placeholder="Last Name">
-            <button class="button" data-bind="click: save_basic_info">Save</button>
+            <input type="text" class="field" data-bind="value: address" placeholder="address">
+            <input type="text" class="field" data-bind="value: zip" placeholder="zip">
+            <button class="button" data-bind="click: save_address_info">Save</button>
         </form>
 
         <form class="screen" data-bind="submit: noop()">
