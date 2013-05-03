@@ -1,7 +1,7 @@
 MIN_DELAY = 1; // Minimum hours between now and apointment time
-MIN_HOUR = 8; // First time for appointments
-MAX_HOUR = 22; // This is in 24 hour, so this would be 10pm
-RATE = 45.00 // USD per hour
+MIN_HOUR = 12; // First time for appointments
+MAX_HOUR = 20; // This is in 24 hour, so this would be 10pm
+RATE = '45.00'; // USD per hour
 
 function App() {
     var self = this, i;
@@ -15,7 +15,16 @@ function App() {
 
         // Find the first hour at least MIN_DELAY hours from now
         // or if it's very early, the first time
-        var start_hour = Math.max(now.getHours() + (now.getMinutes() / 60) + MIN_DELAY, MIN_HOUR);
+        var next_hour = now.getHours() + (now.getMinutes() / 60) + MIN_DELAY;
+        if (Math.ceil(next_hour) > MAX_HOUR)
+            next_hour = MIN_HOUR;
+
+            next_hour = Math.ceil(next_hour);
+
+
+
+        var start_hour = Math.max(next_hour, MIN_HOUR);
+        console.log(start_hour);
 
         // Round it to get an even hour
         start_hour = Math.ceil(start_hour);
@@ -41,9 +50,9 @@ function App() {
 
             if (hour === 0) hour = 12;
             a.push(hour + ':' + min + time_of_day);
-
-            return a;
         }
+
+        return a;
 
     });
 
@@ -56,6 +65,8 @@ function App() {
     self.last_name = ko.observable('');
     self.phone = ko.observable().extend({phone: 0});
     self.password = ko.observable('');
+    self.address = ko.observable('');
+    self.zip = ko.observable('');
     self.card = ko.observable('');
     self.cvv = ko.observable('');
     self.expiration = ko.observable('2016');
@@ -73,17 +84,21 @@ function App() {
 
 
     // Call screens by name
-    self.screens = ['landing', 'login', 'register', 'info/basic', 'info/card', 'main', 'confirm'];
+    self.screens = ['landing', 'login', 'register', 'info/basic', 'info/address', 'info/card', 'main', 'confirm'];
     self.show = function (which) {
         if (which === 'next') {
             if (!self.logged_in())
                 which = 'login';
             else if (!self.first_name())
                 which = 'info/basic';
+            else if (!self.address() || !self.zip())
+                which = 'info/address';
             else if (!self.card() && !self.has_card_set())
                 which = 'info/card';
-            else
+            else if (!self.appointment_time() || self.gender_preference() === self.gender_preferences[0])
                 which = 'main';
+            else
+                which = 'confirm';
         }
 
         for (var i = 0, name = ''; i < self.screens.length; i++) {
@@ -123,12 +138,6 @@ function App() {
 
     }
 
-    self.what_is_knead = function () {
-        // TODO: add a slide for a knead description
-
-        alert('not implemented');
-    }
-
     self.register = function () {
         if (self.slide() == 2) {
             Parse.User.signUp(self.phone(), self.password(), { ACL: new Parse.ACL() }, {
@@ -154,7 +163,13 @@ function App() {
     };
 
     self.save_card_info = function(){
-
+        /*Parse.Cloud.run('card_info', {}, {
+            success: function(result) {
+                // result is 'Hello world!'
+            },
+            error: function(error) {
+            }
+        });*/
         self.show('next');
     };
 
@@ -220,6 +235,11 @@ if (typeof Parse !== "undefined") {
 
 var app = new App();
 ko.applyBindings(app);
+
+// Check for a session user
+if (Parse.User.current()) {
+    app.show('next');
+}
 
 $(window).resize(function () {
     var $this = $(this);
