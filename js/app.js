@@ -86,6 +86,13 @@ function App() {
     // Call screens by name
     self.screens = ['landing', 'login', 'register', 'info/basic', 'info/address', 'info/card', 'main', 'confirm'];
     self.show = function (which) {
+        
+        // On load we may be logged in already
+        if (Parse.User.current() && !self.logged_in()) {
+            self.login();
+            return;
+        }
+
         if (which === 'next') {
             if (!self.logged_in())
                 which = 'login';
@@ -114,8 +121,27 @@ function App() {
 
     // Click handlers
     self.login = function () {
+        var user = Parse.User.current();
+
+        var load = function(from, to){
+            var tmp = user.get(from);
+            if (typeof self[to] === "function") self[to](tmp || '');
+            else console.warn('View Model has no observable', to, '-- it is a', typeof self[to]);
+        }
+
+        if (user) {
+            load("first", "first_name");
+            load("last", "last_name");
+            load("phone", "phone");
+            load("address", "address");
+            load("zip", "zip");
+
+            self.logged_in(true);
+            self.show('next');
+        }
+
         // if on login page, just attempt to log in
-        if (self.slide() == 1 || self.slide() == 2) {
+        else if (self.slide() == 1 || self.slide() == 2) {
             Parse.User.logIn(self.phone(), self.password(), {
                 success: function(user) {
                     self.first_name(user.get("first"));
