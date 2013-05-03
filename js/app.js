@@ -86,7 +86,7 @@ function App() {
     // Call screens by name
     self.screens = ['landing', 'login', 'register', 'info/basic', 'info/address', 'info/card', 'main', 'confirm'];
     self.show = function (which) {
-        
+
         // On load we may be logged in already
         if (Parse.User.current() && !self.logged_in()) {
             self.login();
@@ -166,12 +166,17 @@ function App() {
 
     self.register = function () {
         if (self.slide() == 2) {
-            Parse.User.signUp(self.phone(), self.password(), { ACL: new Parse.ACL() }, {
+            Parse.User.signUp(self.phone(), self.password(), {
+                ACL: new Parse.ACL(),
+                first: self.first_name(),
+                last: self.last_name()
+            }, {
                 success: function(user) {
                     self.login();
                 },
                 error: function(user, error) {
-                    console.error(error);
+                    // TODO: fix this
+                    alert("can't log in");
                 }
             });
             self.logged_in(true);
