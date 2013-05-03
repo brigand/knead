@@ -159,8 +159,17 @@ function App() {
         var user = Parse.User.current();
         user.set("first", self.first_name());
         user.set("last", self.last_name());
+        user.save();
         self.show('next');
     };
+
+    self.save_address_info = function(){
+        var user = Parse.User.current();
+        user.set("address", self.address());
+        user.set("zip", self.zip());
+        user.save();
+        self.show('next');
+    }
 
     self.save_card_info = function(){
         /*Parse.Cloud.run('card_info', {}, {
