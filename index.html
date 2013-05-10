@@ -14,8 +14,8 @@
 <body>
 
 <div id="main">
-    <div id="navbar" data-bind="visible: show_navbar">
-        <div id="back">
+    <nav id="navbar" data-bind="visible: show_navbar">
+        <div id="back" data-bind="css: {wide: back_button_text() !== 'BACK'}, click: back">
             <p data-bind="text: back_button_text">Back</p>
 
             <div>
@@ -24,7 +24,7 @@
         </div>
 
         <div id="account" data-bind="visible: show_account_button">Account</div>
-    </div>
+    </nav>
 
     <div id="screens" data-bind="left: slide">
         <form class="screen" data-bind="submit: noop()">

@@ -76,8 +76,14 @@ function App() {
 
     // App state values
     self.slide = ko.observable(0);
-    self.back_button_text = ko.observable('BACK');
-    self.show_navbar = ko.observable(false);
+    self.back_button_text = ko.computed(function(){
+        var slide = self.slide();
+        if (slide > 1)
+            return 'LOG OUT';
+        else
+            return 'BACK';
+    });
+    self.show_navbar = ko.computed(function(){ return self.slide() > 0; });
     self.show_account_button = ko.observable(true);
     self.logged_in = ko.observable(false);
     self.has_card_set = ko.observable(false);
@@ -107,6 +113,10 @@ function App() {
             else
                 which = 'confirm';
         }
+        if (which === 'prev') {
+            self.slide(self.slide() - 1);
+            return;
+        }
 
         for (var i = 0, name = ''; i < self.screens.length; i++) {
             name = self.screens[i];
@@ -117,6 +127,18 @@ function App() {
             }
         }
         console.error("I can't find slide", which);
+    }
+
+    self.back = function(){
+        if (self.back_button_text() === 'LOG OUT') {
+            Parse.User.logOut();
+            self.logged_in(false);
+            self.password('');
+            self.slide(0);
+        }
+        else {
+            self.show('prev');
+        }
     }
 
     // Click handlers
@@ -192,9 +214,9 @@ function App() {
         user.set("last", self.last_name());
         user.save();
         self.show('next');
-    };
+    }
 
-    self.save_address_info = function(){
+    self.save_address_info = function () {
         var user = Parse.User.current();
         user.set("address", self.address());
         user.set("zip", self.zip());
