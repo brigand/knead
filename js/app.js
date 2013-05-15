@@ -225,13 +225,27 @@ function App() {
     }
 
     self.save_card_info = function(){
-        /*Parse.Cloud.run('card_info', {}, {
-            success: function(result) {
-                // result is 'Hello world!'
-            },
-            error: function(error) {
+        var stripeResponseHandler = function(status, response) {
+            var $form = $($('form')[self.slide()]);
+
+            if (response.error) {
+                $form.find('button').prop('disabled', false);
             }
-        });*/
+            else {
+                var token = response.id;
+
+                Parse.Cloud.run('card_info', {}, {
+                     success: function(result) {
+                        alert('saved');
+                     },
+                     error: function(error) {
+                        console.error(error);
+                        alert('error, check console');
+                     }
+                 });
+
+            }
+        };
         self.show('next');
     };
 
