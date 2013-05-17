@@ -3,6 +3,9 @@ MIN_HOUR = 12; // First time for appointments
 MAX_HOUR = 20; // This is in 24 hour, so this would be 10pm
 RATE = '45.00'; // USD per hour
 
+hasParse = typeof Parse === "object";
+hasStripe = typeof Stripe === "function";
+
 function App() {
     var self = this, i;
 
@@ -94,7 +97,7 @@ function App() {
     self.show = function (which) {
 
         // On load we may be logged in already
-        if (Parse.User.current() && !self.logged_in()) {
+        if (hasParse && Parse.User.current() && !self.logged_in()) {
             self.login();
             return;
         }
