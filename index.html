@@ -88,6 +88,25 @@
 
         <div class="clear"></div>
     </div>
+
+<div class="popScreen" data-bind="css: {fadein: notify.show}, click: notify.cancel">
+
+</div>
+<div class="pop" data-bind="css: {fadein: notify.show}">
+    <div id="notification">
+        <div>
+            <div>
+                <h2 data-bind="text: notify.title">LOG OUT</h2>
+                <div>
+                    <div class="text" data-bind="text: notify.text">you sure you would like to<br> log out?</div>
+                    <div data-bind="foreach: notify.options">
+                        <div class="button2" data-bind="text: text, click: handle">NO</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </div>
 
 <script type="text/javascript" src="js/underscore.js"></script>

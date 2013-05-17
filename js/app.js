@@ -131,10 +131,19 @@ function App() {
 
     self.back = function(){
         if (self.back_button_text() === 'LOG OUT') {
-            Parse.User.logOut();
-            self.logged_in(false);
-            self.password('');
-            self.slide(0);
+            self.notify.title("log out");
+            self.notify.text("Are you sure you would like to log out?");
+            self.notify.options([
+                {text: "Yes", handle: function(){
+                    Parse.User.logOut();
+                    self.logged_in(false);
+                    self.password('');
+                    self.slide(0);
+                    self.notify.show(false);
+                }},
+                {text: "Cancel", handle: self.notify.cancel}
+            ]);
+            self.notify.show(true);
         }
         else {
             self.show('prev');
@@ -224,6 +233,34 @@ function App() {
         self.show('next');
     }
 
+    self.notify = {
+        show: ko.observable(false),
+        title: ko.observable("title"),
+        text: ko.observable("text"),
+        options: ko.observableArray(),
+        cancel: function(){
+            console.log("cancel");
+
+            // Do this first so the option's handle may reshow a notification
+            self.notify.show(false);
+
+            _.any(self.notify.options, function(o){
+                var text = o.text.toLowerCase();
+                if (_.indexOf(['no', 'cancel', 'deny'], text)) {
+                    if (typeof o.handle === 'function' && o.handle !== self.notify.cancel) o.handle();
+                    return true;
+                }
+                return false;
+            });
+
+        }
+    };
+
+    self.notify.options([
+        {text: "Okay", handle: function(){}},
+        {text: "Cancel", handle: self.notify.cancel}
+    ]);
+
     self.save_card_info = function(){
         var stripeResponseHandler = function(status, response) {
             var $form = $($('form')[self.slide()]);
@@ -295,7 +332,7 @@ function App() {
 // Parse is loaded remotely, so this prevents offline crashed durring development
 if (typeof Parse !== "undefined") {
     Parse.initialize("afbV5ko6z5E8bh91esQlpe9o3ADw3Kit4pVWxJfT", "NFyUzhMO9kTDExBvpElmNrCJJTbpknOsf52dBe3g");
-
+/*
     var TestObject = Parse.Object.extend("TestObject");
     var testObject = new TestObject();
     testObject.save({foo:"bar"}, {
@@ -306,6 +343,7 @@ if (typeof Parse !== "undefined") {
             $(".error").show();
         }
     });
+    */
 }
 
 
