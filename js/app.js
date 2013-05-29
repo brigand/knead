@@ -79,6 +79,7 @@ function App() {
 
     // App state values
     self.slide = ko.observable(0);
+    self.buttonDisable = false;
     self.back_button_text = ko.computed(function(){
         var slide = self.slide();
         if (slide > 1)
